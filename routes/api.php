@@ -11,3 +11,4 @@ Route::get('/questions/tpk', [TpkQuestionController::class, 'index']);
 Route::post('/questions/tpk', [TpkQuestionController::class, 'store']);
 Route::post('/questions/tpk/{id}', [TpkQuestionController::class, 'update']);
 Route::get('/questions/tpk/{id}', [TpkQuestionController::class, 'getById']);
+Route::delete('/questions/tpk/{id}', [TpkQuestionController::class, 'destroy']);

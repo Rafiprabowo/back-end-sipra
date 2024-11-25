@@ -31,8 +31,8 @@ class TpkQuestionController extends Controller
             'option4' => $soal->options[3] ?? null,
             'option5' => $soal->options[4] ?? null,// Ambil opsi keempat
             'is_correct' => $soal->is_correct,
-            'created_at' => $soal->created_at->toIso8601String(), // Format tanggal
-            'updated_at' => $soal->updated_at->toIso8601String(), // Format tanggal
+            'created_at' => $soal->created_at->toIso8601String(),
+            'updated_at' => $soal->updated_at->toIso8601String(),
         ];
     });
 
@@ -63,7 +63,7 @@ class TpkQuestionController extends Controller
     ];
 
     // Kembalikan response dengan data soal
-    return response()->json(['data' => $formattedSoal], 200);
+    return response()->json(['data' => $formattedSoal])->setStatusCode(200);
 }
 
 
@@ -84,7 +84,6 @@ class TpkQuestionController extends Controller
         'opsi4' => 'required|string',
         'opsi5' => 'required|string',
         'is_correct' => 'required|integer|min:0|max:4',
-        'question_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
     ]);
 
     // Menyusun array opsi jawaban
@@ -116,7 +115,7 @@ class TpkQuestionController extends Controller
 
     // Kembalikan response sukses dengan URL gambar yang dapat diakses
     return response()->json([
-        'message' => 'Question created successfully',
+        'message' => 'Soal berhasil dibuat',
         'data' => [
             'id' => $question->id,
             'question_text' => $question->question_text,
@@ -127,7 +126,7 @@ class TpkQuestionController extends Controller
             'created_at' => $question->created_at->toIso8601String(),
             'updated_at' => $question->updated_at->toIso8601String(),
         ]
-    ], 201);
+    ])->setStatusCode(201);
 }
 
     /**
@@ -153,7 +152,6 @@ class TpkQuestionController extends Controller
         'opsi4' => 'required|string',
         'opsi5' => 'required|string',
         'is_correct' => 'required|integer|min:0|max:4',
-        'question_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
     ]);
 
     // Cari soal berdasarkan ID
@@ -206,9 +204,9 @@ class TpkQuestionController extends Controller
 
     // Kembalikan response sukses dengan data yang diperbarui
     return response()->json([
-        'message' => 'Question updated successfully',
+        'message' => 'Soal berhasil diperbarui',
         'data' => $formattedQuestion,
-    ], 200);
+    ])->setStatusCode(200);
 }
 
 
@@ -218,5 +216,8 @@ class TpkQuestionController extends Controller
     public function destroy(string $id)
     {
         //
+        $soal = TPKQuestion::find($id);
+        $soal->delete();
+        return response()->json(['data' => true, 'message' => 'Soal berhasil dihapus'])->setStatusCode(200);
     }
 }
